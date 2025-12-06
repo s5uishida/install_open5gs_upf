@@ -25,7 +25,8 @@ The network functions of Open5GS for 4G and 5G U-Plane are performed by the foll
 ## Table of Contents
 
 - [Build Open5GS](#build)
-- [Install required packages for running UPF binary commands on another Host](#install_packages)
+  - [Install required packages for running UPF binary commands on another Host](#install_packages)
+  - [How to build only UPF binary commands](#build_only_up)
 - [Changelog (summary)](#changelog)
 
 ---
@@ -42,15 +43,26 @@ It also explains how to configure and run Open5GS UPF binary commands.
 
 <a id="install_packages"></a>
 
-## Install required packages for running UPF binary commands on another Host
+### Install required packages for running UPF binary commands on another Host
 
 To run the built `open5gs-sgwud` and `open5gs-upfd` on another host, install the following packages on the host.
 ```
 # apt -y install libtalloc-dev libtins-dev libmicrohttpd-dev
 ```
 
+<a id="build_only_up"></a>
+
+### How to build only UPF binary commands
+
+First for building only UPF binary commands, install the following packages in addition to the above packages.
+```
+# apt -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential cmake meson libyaml-dev
+```
+Then apply [this patch](./patches/build_only_up.patch) and build. Only `open5gs-sgwud` and `open5gs-upfd` will be built.
+
 <a id="changelog"></a>
 
 ## Changelog (summary)
 
+- [2025.12.07] Added instructions for building only UPF binary commands.
 - [2025.11.23] Initial release.
