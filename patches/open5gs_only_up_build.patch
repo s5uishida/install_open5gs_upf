@@ -1,0 +1,163 @@
+diff -ur open5gs.orig/configs/meson.build open5gs/configs/meson.build
+--- open5gs.orig/configs/meson.build	2025-12-07 06:14:18.000000000 +0900
++++ open5gs/configs/meson.build	2025-12-07 07:51:38.100329067 +0900
+@@ -25,35 +25,7 @@
+ build_configs_dir = join_paths(open5gs_build_dir, 'configs')
+ conf_data.set('build_configs_dir', build_configs_dir)
+ 
+-build_subprojects_freeDiameter_extensions_dir = join_paths(
+-        open5gs_build_dir, 'subprojects', 'freeDiameter', 'extensions')
+-conf_data.set('build_subprojects_freeDiameter_extensions_dir',
+-        build_subprojects_freeDiameter_extensions_dir)
+-
+-example_conf = '''
+-    sample.yaml
+-    attach.yaml
+-    310014.yaml
+-    csfb.yaml
+-    volte.yaml
+-    vonr.yaml
+-    slice.yaml
+-    srsenb.yaml
+-    non3gpp.yaml
+-    transfer.yaml
+-    transfer-error-case.yaml
+-'''.split()
+-
+-foreach file : example_conf
+-    gen = configure_file(
+-            input : file + '.in',
+-            output : file,
+-            configuration : conf_data)
+-endforeach
+-
+ subdir('open5gs')
+-subdir('freeDiameter')
+ subdir('systemd')
+ subdir('logrotate')
+ subdir('newsyslog')
+-subdir('examples')
+diff -ur open5gs.orig/configs/open5gs/meson.build open5gs/configs/open5gs/meson.build
+--- open5gs.orig/configs/open5gs/meson.build	2025-12-07 06:14:18.000000000 +0900
++++ open5gs/configs/open5gs/meson.build	2025-12-07 07:51:38.100329067 +0900
+@@ -20,24 +20,8 @@
+         mkdir_p.format(open5gs_sysconfdir))
+ 
+ open5gs_conf = '''
+-    mme.yaml
+-    sgwc.yaml
+     sgwu.yaml
+-    smf.yaml
+-    amf.yaml
+     upf.yaml
+-    hss.yaml
+-    pcrf.yaml
+-    nrf.yaml
+-    scp.yaml
+-    sepp1.yaml
+-    sepp2.yaml
+-    ausf.yaml
+-    udm.yaml
+-    udr.yaml
+-    pcf.yaml
+-    nssf.yaml
+-    bsf.yaml
+ '''.split()
+ 
+ foreach file : open5gs_conf
+@@ -48,6 +32,3 @@
+     meson.add_install_script(python3_exe, '-c',
+             install_conf.format(gen, open5gs_sysconfdir))
+ endforeach
+-
+-subdir('tls')
+-subdir('hnet')
+diff -ur open5gs.orig/configs/systemd/meson.build open5gs/configs/systemd/meson.build
+--- open5gs.orig/configs/systemd/meson.build	2025-12-07 06:14:18.000000000 +0900
++++ open5gs/configs/systemd/meson.build	2025-12-07 07:51:38.100329067 +0900
+@@ -16,23 +16,8 @@
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ 
+ systemd_conf_in = '''
+-    open5gs-mmed.service
+-    open5gs-sgwcd.service
+-    open5gs-smfd.service
+-    open5gs-amfd.service
+     open5gs-sgwud.service
+     open5gs-upfd.service
+-    open5gs-hssd.service
+-    open5gs-pcrfd.service
+-    open5gs-nrfd.service
+-    open5gs-scpd.service
+-    open5gs-seppd.service
+-    open5gs-ausfd.service
+-    open5gs-udmd.service
+-    open5gs-pcfd.service
+-    open5gs-nssfd.service
+-    open5gs-bsfd.service
+-    open5gs-udrd.service
+ '''.split()
+ 
+ foreach file : systemd_conf_in
+diff -ur open5gs.orig/lib/meson.build open5gs/lib/meson.build
+--- open5gs.orig/lib/meson.build	2025-12-07 06:14:19.000000000 +0900
++++ open5gs/lib/meson.build	2025-12-07 07:58:02.527555142 +0900
+@@ -19,18 +19,10 @@
+ 
+ subdir('core')
+ subdir('proto')
+-subdir('dbi')
+ subdir('crypt')
+ subdir('ipfw')
+ subdir('tun')
+ subdir('app')
+ subdir('metrics')
+-subdir('sctp')
+-subdir('diameter')
+-subdir('asn1c')
+-subdir('ngap')
+-subdir('s1ap')
+-subdir('nas')
+ subdir('gtp')
+ subdir('pfcp')
+-subdir('sbi')
+diff -ur open5gs.orig/meson.build open5gs/meson.build
+--- open5gs.orig/meson.build	2025-12-07 06:14:19.000000000 +0900
++++ open5gs/meson.build	2025-12-07 07:51:38.101329059 +0900
+@@ -124,9 +124,8 @@
+ subdir('configs')
+ subdir('lib')
+ subdir('src')
+-subdir('misc')
+ # Don't build the tests unless we can run them (either natively or in an exe wrapper)
+-build_tests = not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper())
++build_tests = false
+ if build_tests
+     subdir('tests')
+ endif
+diff -ur open5gs.orig/src/meson.build open5gs/src/meson.build
+--- open5gs.orig/src/meson.build	2025-12-07 06:14:19.000000000 +0900
++++ open5gs/src/meson.build	2025-12-07 07:51:38.101329059 +0900
+@@ -33,22 +33,5 @@
+ version_conf.set_quoted('OPEN5GS_VERSION', package_version)
+ configure_file(output : 'version.h', configuration : version_conf)
+ 
+-subdir('mme')
+-subdir('hss')
+-subdir('sgwc')
+ subdir('sgwu')
+-subdir('pcrf')
+-
+-subdir('nrf')
+-subdir('scp')
+-subdir('sepp')
+-
+-subdir('udr')
+-subdir('udm')
+-subdir('pcf')
+-subdir('nssf')
+-subdir('bsf')
+-subdir('ausf')
+ subdir('upf')
+-subdir('smf')
+-subdir('amf')
