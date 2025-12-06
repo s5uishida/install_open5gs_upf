@@ -54,7 +54,7 @@ To run the built `open5gs-sgwud` and `open5gs-upfd` on another host, install the
 
 ### How to build only UPF binary commands
 
-First for building only UPF binary commands, install the following packages in addition to the above packages.
+If you want to build only UPF binary commands, first install the following packages in addition to the above packages.
 ```
 # apt -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential cmake meson libyaml-dev
 ```
