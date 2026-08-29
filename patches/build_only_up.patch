@@ -1,7 +1,7 @@
-diff -ur open5gs.orig/configs/meson.build open5gs/configs/meson.build
---- open5gs.orig/configs/meson.build	2025-12-07 06:14:18.000000000 +0900
-+++ open5gs/configs/meson.build	2025-12-07 07:51:38.100329067 +0900
-@@ -25,35 +25,7 @@
+diff -urN open5gs.orig/configs/meson.build open5gs/configs/meson.build
+--- open5gs.orig/configs/meson.build	2026-08-29 17:37:48.368094651 +0900
++++ open5gs/configs/meson.build	2026-08-29 17:43:09.903407305 +0900
+@@ -25,36 +25,7 @@
  build_configs_dir = join_paths(open5gs_build_dir, 'configs')
  conf_data.set('build_configs_dir', build_configs_dir)
  
@@ -13,6 +13,7 @@ diff -ur open5gs.orig/configs/meson.build open5gs/configs/meson.build
 -example_conf = '''
 -    sample.yaml
 -    attach.yaml
+-    dns.yaml
 -    310014.yaml
 -    csfb.yaml
 -    volte.yaml
