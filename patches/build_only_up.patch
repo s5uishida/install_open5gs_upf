@@ -1,7 +1,7 @@
 diff -ur open5gs.orig/configs/meson.build open5gs/configs/meson.build
---- open5gs.orig/configs/meson.build	2026-08-29 18:14:53.509765332 +0900
-+++ open5gs/configs/meson.build	2026-08-29 18:17:12.736187495 +0900
-@@ -25,36 +25,7 @@
+--- open5gs.orig/configs/meson.build	2026-09-16 20:42:31.936579146 +0900
++++ open5gs/configs/meson.build	2026-09-16 20:38:36.637324329 +0900
+@@ -25,37 +25,7 @@
  build_configs_dir = join_paths(open5gs_build_dir, 'configs')
  conf_data.set('build_configs_dir', build_configs_dir)
  
@@ -12,6 +12,7 @@ diff -ur open5gs.orig/configs/meson.build open5gs/configs/meson.build
 -
 -example_conf = '''
 -    sample.yaml
+-    eir.yaml
 -    attach.yaml
 -    dns.yaml
 -    310014.yaml
@@ -39,9 +40,9 @@ diff -ur open5gs.orig/configs/meson.build open5gs/configs/meson.build
  subdir('newsyslog')
 -subdir('examples')
 diff -ur open5gs.orig/configs/open5gs/meson.build open5gs/configs/open5gs/meson.build
---- open5gs.orig/configs/open5gs/meson.build	2026-08-29 18:14:53.510765285 +0900
-+++ open5gs/configs/open5gs/meson.build	2026-08-29 18:17:12.737187447 +0900
-@@ -20,24 +20,8 @@
+--- open5gs.orig/configs/open5gs/meson.build	2026-09-16 20:42:31.937579142 +0900
++++ open5gs/configs/open5gs/meson.build	2026-09-16 20:36:28.628547074 +0900
+@@ -20,25 +20,8 @@
          mkdir_p.format(open5gs_sysconfdir))
  
  open5gs_conf = '''
@@ -63,10 +64,11 @@ diff -ur open5gs.orig/configs/open5gs/meson.build open5gs/configs/open5gs/meson.
 -    pcf.yaml
 -    nssf.yaml
 -    bsf.yaml
+-    eir.yaml
  '''.split()
  
  foreach file : open5gs_conf
-@@ -48,6 +32,3 @@
+@@ -49,6 +32,3 @@
      meson.add_install_script(python3_exe, '-c',
              install_conf.format(gen, open5gs_sysconfdir))
  endforeach
@@ -74,9 +76,9 @@ diff -ur open5gs.orig/configs/open5gs/meson.build open5gs/configs/open5gs/meson.
 -subdir('tls')
 -subdir('hnet')
 diff -ur open5gs.orig/configs/systemd/meson.build open5gs/configs/systemd/meson.build
---- open5gs.orig/configs/systemd/meson.build	2026-08-29 18:14:53.513765144 +0900
-+++ open5gs/configs/systemd/meson.build	2026-08-29 18:17:12.737187447 +0900
-@@ -16,23 +16,8 @@
+--- open5gs.orig/configs/systemd/meson.build	2026-09-16 20:42:31.940579130 +0900
++++ open5gs/configs/systemd/meson.build	2026-09-16 20:39:42.987197431 +0900
+@@ -16,24 +16,8 @@
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
  
  systemd_conf_in = '''
@@ -97,12 +99,13 @@ diff -ur open5gs.orig/configs/systemd/meson.build open5gs/configs/systemd/meson.
 -    open5gs-nssfd.service
 -    open5gs-bsfd.service
 -    open5gs-udrd.service
+-    open5gs-eird.service
  '''.split()
  
  foreach file : systemd_conf_in
 diff -ur open5gs.orig/lib/meson.build open5gs/lib/meson.build
---- open5gs.orig/lib/meson.build	2026-08-29 18:14:53.813751020 +0900
-+++ open5gs/lib/meson.build	2026-08-29 18:24:19.131179473 +0900
+--- open5gs.orig/lib/meson.build	2026-09-16 20:42:32.260577848 +0900
++++ open5gs/lib/meson.build	2026-09-16 20:34:46.225076247 +0900
 @@ -18,20 +18,11 @@
  libinc = include_directories('.')
  
@@ -125,8 +128,8 @@ diff -ur open5gs.orig/lib/meson.build open5gs/lib/meson.build
  subdir('pfcp')
 -subdir('sbi')
 diff -ur open5gs.orig/meson.build open5gs/meson.build
---- open5gs.orig/meson.build	2026-08-29 18:14:54.432721876 +0900
-+++ open5gs/meson.build	2026-08-29 18:17:12.738187400 +0900
+--- open5gs.orig/meson.build	2026-09-16 20:42:32.867575417 +0900
++++ open5gs/meson.build	2026-09-16 20:34:46.225076247 +0900
 @@ -124,9 +124,8 @@
  subdir('configs')
  subdir('lib')
@@ -139,9 +142,9 @@ diff -ur open5gs.orig/meson.build open5gs/meson.build
      subdir('tests')
  endif
 diff -ur open5gs.orig/src/meson.build open5gs/src/meson.build
---- open5gs.orig/src/meson.build	2026-08-29 18:14:54.448721123 +0900
-+++ open5gs/src/meson.build	2026-08-29 18:17:12.738187400 +0900
-@@ -33,22 +33,5 @@
+--- open5gs.orig/src/meson.build	2026-09-16 20:42:32.885575345 +0900
++++ open5gs/src/meson.build	2026-09-16 20:40:53.684960851 +0900
+@@ -33,23 +33,5 @@
  version_conf.set_quoted('OPEN5GS_VERSION', package_version)
  configure_file(output : 'version.h', configuration : version_conf)
  
@@ -160,6 +163,7 @@ diff -ur open5gs.orig/src/meson.build open5gs/src/meson.build
 -subdir('pcf')
 -subdir('nssf')
 -subdir('bsf')
+-subdir('eir')
 -subdir('ausf')
  subdir('upf')
 -subdir('smf')
